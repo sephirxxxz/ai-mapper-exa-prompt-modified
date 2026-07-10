@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Mapper"
+  short_description: "Map Chinese AI projects and talent"
+  default_prompt: "Use $ai-mapper with TOPIC=通用扫描, mandatory Elsewhere API, and four Exa-backed raw-search lanes to create dated AI-Mapping final and raw Markdown files."

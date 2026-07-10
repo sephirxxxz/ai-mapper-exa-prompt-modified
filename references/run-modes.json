@@ -1,0 +1,196 @@
+{
+  "modes": {
+    "adaptive standard scan": {
+      "triggers": [
+        "default",
+        "normal /ai-mapper",
+        "TOPIC=通用扫描"
+      ],
+      "gates": {
+        "Total Exa query/source paths": {
+          "minimum": 36,
+          "target": "40-70",
+          "cap": 80
+        },
+        "Total Exa candidate URLs": {
+          "minimum": 160,
+          "target": "180-320",
+          "cap": 350
+        },
+        "Total opened/fetched original pages": {
+          "minimum": 50,
+          "target": "60-100",
+          "cap": 120
+        },
+        "Total raw P0/P1 leads": {
+          "minimum": 30,
+          "target": "35-70",
+          "cap": 80
+        },
+        "C-funding query/source paths": {
+          "minimum": 12,
+          "target": "14-22",
+          "cap": 25
+        },
+        "C-funding candidate URLs": {
+          "minimum": 70,
+          "target": "70-140",
+          "cap": 160
+        },
+        "C-funding opened/fetched pages": {
+          "minimum": 18,
+          "target": "24-42",
+          "cap": 50
+        },
+        "C-funding raw financing/startup leads": {
+          "minimum": 10,
+          "target": "12-25",
+          "cap": 30
+        },
+        "Source families": {
+          "minimum": 10,
+          "target": "12-16",
+          "cap": 18
+        },
+        "C-funding source families": {
+          "minimum": 6,
+          "target": "6-8",
+          "cap": 10
+        },
+        "Elsewhere financing/startup candidate facts": {
+          "minimum": 5,
+          "target": "8-15",
+          "cap": 20
+        }
+      },
+      "lane_targets": {
+        "A-dev": {
+          "queries": "10-14",
+          "candidate_urls": "40-70",
+          "opened_pages": "12-22",
+          "raw_leads": "8-15"
+        },
+        "B-content": {
+          "queries": "8-12",
+          "candidate_urls": "35-60",
+          "opened_pages": "10-18",
+          "raw_leads": "6-12"
+        },
+        "C-funding": {
+          "queries": "14-22",
+          "candidate_urls": "70-140",
+          "opened_pages": "24-42",
+          "raw_leads": "12-25"
+        },
+        "D-academic": {
+          "queries": "8-12",
+          "candidate_urls": "35-60",
+          "opened_pages": "10-18",
+          "raw_leads": "6-12"
+        }
+      }
+    },
+    "deep map": {
+      "triggers": [
+        "深度扫",
+        "全量市场地图",
+        "重扫一遍",
+        "尽可能不要漏"
+      ],
+      "gates": {
+        "Total Exa query/source paths": {
+          "minimum": 100,
+          "target": "100-120",
+          "cap": 140
+        },
+        "Total Exa candidate URLs": {
+          "minimum": 500,
+          "target": "500-600",
+          "cap": 700
+        },
+        "Total opened/fetched original pages": {
+          "minimum": 150,
+          "target": "150-180",
+          "cap": 220
+        },
+        "Total raw P0/P1 leads": {
+          "minimum": 100,
+          "target": "100-120",
+          "cap": 150
+        },
+        "C-funding query/source paths": {
+          "minimum": 50,
+          "target": "50-60",
+          "cap": 70
+        },
+        "C-funding candidate URLs": {
+          "minimum": 300,
+          "target": "300-330",
+          "cap": 380
+        },
+        "C-funding opened/fetched pages": {
+          "minimum": 80,
+          "target": "80-95",
+          "cap": 110
+        },
+        "C-funding raw financing/startup leads": {
+          "minimum": 50,
+          "target": "50-70",
+          "cap": 80
+        },
+        "Source families": {
+          "minimum": 18,
+          "target": "18-24",
+          "cap": 28
+        },
+        "C-funding source families": {
+          "minimum": 10,
+          "target": "10-14",
+          "cap": 16
+        },
+        "Elsewhere financing/startup candidate facts": {
+          "minimum": 20,
+          "target": "20-30",
+          "cap": 40
+        }
+      },
+      "lane_targets": {
+        "A-dev": {
+          "queries": "25-35",
+          "candidate_urls": "100-140",
+          "opened_pages": "35-50",
+          "raw_leads": "25-35"
+        },
+        "B-content": {
+          "queries": "20-30",
+          "candidate_urls": "90-130",
+          "opened_pages": "30-45",
+          "raw_leads": "20-30"
+        },
+        "C-funding": {
+          "queries": "45-60",
+          "candidate_urls": "250-330",
+          "opened_pages": "75-95",
+          "raw_leads": "50-70"
+        },
+        "D-academic": {
+          "queries": "20-30",
+          "candidate_urls": "90-130",
+          "opened_pages": "30-45",
+          "raw_leads": "20-30"
+        }
+      }
+    }
+  },
+  "early_stop": {
+    "allowed_after_minimum_gates": true,
+    "batch_size": "25-30 new candidate URLs",
+    "new_p0_p1_threshold": 3,
+    "requires_all_lanes_usable": true,
+    "invalid_reasons": [
+      "context pressure",
+      "agent fatigue",
+      "already found a few good rows"
+    ]
+  }
+}
