@@ -1,6 +1,6 @@
 ---
 name: ai-mapper
-description: Use when the user invokes /ai-mapper or asks for AI mapping of early Chinese/China-relevant AI software projects, startups, founders, independent developers, open-source builders, AI product teams, or qualified AI talent leads. Triggers include /ai-mapper, AI mapping, 中文 AI 项目, 中国 AI 创业, 早期项目, AI 人才, AI 融资, Obsidian 报告, source-backed research artifact.
+description: "Use when the user invokes /ai-mapper or asks to map, scan, discover, or research early Chinese/China-relevant AI software projects, startups, founders, indie developers, open-source builders, AI product teams, or qualified AI talent leads. Triggers: AI mapping, 中文 AI 项目, 中国 AI 创业, 早期项目, 人才 Mapping, AI 融资, 市场地图, founder scouting, startup discovery, Obsidian 报告, source-backed research artifact."
 ---
 
 # AI Mapper
@@ -11,41 +11,54 @@ Create source-backed Obsidian reports for early Chinese/China-relevant AI softwa
 
 Never write final artifacts, update the latest pointer, or call a run `complete` until every mandatory gate is recorded mechanically and both `scripts/forced_pipeline.py guard-final` and `scripts/validate_run.py` pass for the workspace.
 
+## Red Flags (return to the checklist step that resolves them)
+
+Stop and reset if you are about to:
+
+- Run a freehand Exa query after `exa-query-plan.jsonl` exists.
+- Mark a run `complete` while `guard-final` or `validate_run.py` is failing.
+- Use Elsewhere as the backfill path for team, person, background, contact, or date verification.
+- Spawn a subagent before the Exa Candidate Queue exists or for recall/final writing/latest-pointer updates.
+- Narrow `TOPIC` away from `通用扫描` because the user mentioned a direction.
+- Skip public-web enrichment just because Elsewhere is available.
+- Treat an under-minimum gate as `blocked` while Exa and the workspace are still available.
+
 ## Workflow Checklist
 
-- [ ] Step 0 (⛔ BLOCKING): Setup
+- [ ] Step 1 (⛔ BLOCKING): Setup
   - Resolve paths per `## Paths`.
   - Run `scripts/preflight.py` to classify Elsewhere key/quota, Exa, and context-mode status.
   - Read `references/run-modes.md`, `references/source-policy.md`, and `references/evals.md`.
   - Set `TOPIC=通用扫描`; record any user-emphasized direction in `topic.md` without narrowing the scan.
-- [ ] Step 0.6 (⛔ BLOCKING): EXA Query Plan
+- [ ] Step 2 (⛔ BLOCKING): EXA Query Plan
   - Read `references/exa-query-plan.md`, `references/search-plan.md`, and `references/run-modes.md`.
   - Agent-generate four mandatory base axes plus zero to two enhancement axes in `{WORKSPACE}/research-axes.json`.
   - Base axes must cover developer/product, product/market, funding/company, and academic productization. Enhancement axes may widen user-emphasized or current themes but cannot replace a base axis.
   - Run `scripts/build_exa_query_plan.py compile --workspace "$WORKSPACE" --run-mode "$RUN_MODE"`.
   - Confirm `{WORKSPACE}/exa-query-plan.jsonl` covers all four lanes and meets the selected mode's query floors.
   - After compilation, execute only query rows from `exa-query-plan.jsonl`; freehand Exa recall queries are invalid.
-- [ ] Step 1 (⛔ BLOCKING): Exa recall
+- [ ] Step 3 (⛔ BLOCKING): Exa recall
   - Run four lanes (`A-dev`, `B-content`, `C-funding`, `D-academic`) from the compiled plan.
   - Persist every Exa response through `scripts/forced_pipeline.py record-exa-response --query-plan-file "$WORKSPACE/exa-query-plan.jsonl" --query-id "$QUERY_ID"`.
   - The recorder writes returned URLs to `exa-candidates.jsonl` and every executed query, including zero-result queries, to `exa-query-execution.jsonl`.
-- [ ] Step 2 (⚠️ REQUIRED): Candidate triage and opening
+- [ ] Step 4 (⚠️ REQUIRED): Candidate triage and opening
+  - Ask: What would I need to see in the opened page to justify this `must_open_reason`?
   - Tag every row with `source_family_hint`, `entry_type_hint`, `possible_signal`, `risk_reason`, `entity_cluster_id`, `must_open_reason`, `review_decision`.
   - Open/fetch every row whose `must_open_reason` is not `none`.
   - Use `references/source-families.md` for coverage counting.
-- [ ] Step 3 (conditional): Elsewhere API enrichment
+- [ ] Step 5 (conditional): Elsewhere API enrichment
   - If Elsewhere is available, run keyword intelligence, project discovery, and financing pass per `references/elsewhere-policy.md`.
   - Write `{WORKSPACE}/elsewhere-api-audit.jsonl`.
-- [ ] Step 4 (⚠️ REQUIRED): Public-web enrichment
+- [ ] Step 6 (⚠️ REQUIRED): Public-web enrichment
   - For likely A/B projects and all named people, resolve Team, Funding, Product proof, and Date proof from public sources.
-- [ ] Step 5 (⚠️ REQUIRED): Validate, enrich, rate
+- [ ] Step 7 (⚠️ REQUIRED): Validate, enrich, rate
   - Read `references/rating-rubric.md`, `references/schemas.md`, `references/structured-artifacts.md`.
   - Write `validated.md`, `rated.md`, `candidates.jsonl`, `evidence.jsonl`.
-- [ ] Step 6 (⛔ BLOCKING): Final guard
+- [ ] Step 8 (⛔ BLOCKING): Final guard
   - Run `scripts/forced_pipeline.py guard-final --workspace "$WORKSPACE" --run-mode "$RUN_MODE" --elsewhere-status {available|missing_key|quota_exhausted|rate_limited|error|not_run}`.
   - Run `scripts/validate_run.py --workspace "$WORKSPACE"`.
   - If either fails because selected-mode gates are below minimum while Exa/workspace are available, continue recall/opening; do not write final/latest.
-- [ ] Step 7 (⚠️ REQUIRED): Write artifacts
+- [ ] Step 9 (⚠️ REQUIRED): Write artifacts
   - Before overwriting `${BASE}/${DATE}-ai-mapper.md` or `${BASE}/最新AI项目与人才Mapping.md`, use `AskUserQuestion` to confirm.
   - Write final report, raw artifact, latest pointer, and run report.
   - Return paths, counts, and limitations only.
@@ -92,6 +105,7 @@ Every rated project lead must answer: `是什么项目`, `为什么值得看`, `
 
 Output quality bar:
 
+- Ask: If I remove every Exa snippet, does this row still stand on original sources?
 - A project row must identify the project, explain why it matters now, cite at least one openable original or attributed Elsewhere source, and mark missing fields as `待补`.
 - A project row cannot be supported only by one media/report page when team, funding, and product proof are all unresolved.
 - B rows must name the exact missing field using the gap enum in `references/rating-rubric.md`.
@@ -181,6 +195,16 @@ Use the exact gate pass/fail header: `Gate | Required | Actual | Pass? | Notes`.
 Answer with completeness status, final report path, raw artifact path, latest pointer path, run report path, A/B/C project counts, talent count, and limitations only after `guard-final` and `validate_run.py` have passed for a complete or valid degraded run, or after a real blocker has been recorded.
 
 For `degraded / Exa-only`, explicitly say Elsewhere was unavailable, standard output paths were used, and team/person/background fields were handled by public-web/Codex search gaps.
+
+## Gotchas
+
+- "Degraded" in the final report must be the exact phrase `degraded / Exa-only`; bare `degraded` fails validation.
+- An unopened row cannot be marked `dropped`; use `not_selected` or `unreviewed` instead.
+- `search_seed` cannot contain years, months, or recruitment terms; the compiler owns current dates and banned-term checks.
+- A zero-result Exa query still needs a terminal row in `exa-query-execution.jsonl` with status `queried_no_usable_result`.
+- Duplicate `normalized_url` rows require an explicit duplicate status; do not silently deduplicate.
+- `context-mode` is for context hygiene only; it is never evidence.
+- Product Hunt, GitHub Trending, and Hugging Face Trending are radar signals; backtrace candidates to original evidence before rating.
 
 ## Anti-Patterns
 

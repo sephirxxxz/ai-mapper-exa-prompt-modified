@@ -2,6 +2,15 @@
 
 Read this before the first Exa request. The query plan separates semantic judgment from mechanical search expansion.
 
+## Table of Contents
+
+- [Contract](#contract)
+- [Mandatory Base Roles](#mandatory-base-roles)
+- [Why 4-6 Axes](#why-4-6-axes)
+- [Required Schema](#required-schema)
+- [Compile And Execute](#compile-and-execute)
+- [Evidence Boundary](#evidence-boundary)
+
 ## Contract
 
 The agent writes `{WORKSPACE}/research-axes.json` with:
