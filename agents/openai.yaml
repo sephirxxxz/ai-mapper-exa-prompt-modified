@@ -1,4 +1,6 @@
 interface:
-  display_name: "AI Mapper"
-  short_description: "Map Chinese AI projects and talent"
-  default_prompt: "Use $ai-mapper with TOPIC=通用扫描, mandatory Elsewhere API, and four Exa-backed raw-search lanes to create dated AI-Mapping final and raw Markdown files."
+  display_name: "AI Mapper Agent"
+  short_description: "Map China-relevant AI software with evidence"
+  default_prompt: "Use $ai-mapper-agent to run a source-backed local AI project map."
+policy:
+  allow_implicit_invocation: true

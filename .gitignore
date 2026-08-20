@@ -2,3 +2,8 @@ __pycache__/
 *.py[cod]
 .DS_Store
 *.skill
+.env
+.venv/
+.context-mode/
+.ai-mapper-project
+runs/
